@@ -6,13 +6,13 @@ export function parseNumber(s){if(typeof s!=='string'&&typeof s!=='number')retur
 export function markNumeric(field,value,unit){const n=parseNumber(value);return Number.isFinite(n)&&unit===field.unit&&Math.abs(n-field.answer)<=Math.max(Math.abs(field.answer)*0.01,0.00001);}
 export function shuffle(a,rng=Math.random){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 export function shuffledQuestion(q,rng=Math.random){const order=shuffle(q.options.map((_,i)=>i),rng);return {...q,options:order.map(i=>q.options[i]),answer:order.indexOf(q.answer)};}
-export function record(state,q,score,{uncertain=false,now=Date.now()}={}){
+export function record(state,q,score,{uncertain=false,reward=true,now=Date.now()}={}){
  const date=dayKey(new Date(now));const prev=state.stats[q.id]||{attempts:0,correct:0,run:0,due:0,group:q.group};
  const ok=score===1;const run=ok&&!uncertain?prev.run+1:0;
  state.stats[q.id]={...prev,attempts:prev.attempts+1,correct:prev.correct+(ok?1:0),run,due:now+([0,1,3,7,14,30,60][Math.min(run,6)])*86400000,last:now,group:q.group,score};
  const activity=state.days[date]||{count:0,correct:0,ids:[]};activity.count++;if(ok)activity.correct++;
  // Eine Aufgabe vergibt pro Kalendertag nur einmal XP.
- if(!activity.ids.includes(q.id)){state.xp+=ok?20:5;activity.ids.push(q.id);}state.days[date]=activity;
+ if(!activity.ids.includes(q.id)){if(reward)state.xp+=ok?20:5;activity.ids.push(q.id);}state.days[date]=activity;
  return state;
 }
 export const mastered=s=>s&&s.run>=3;

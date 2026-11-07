@@ -1,114 +1,77 @@
-# ElektroMaster 1.0 – Start und Nutzung
+# ElektroMaster 2.0 – bestehende App aktualisieren
 
-Eine eigenständige Elektrotechnik-Lern-App für PC und iPhone. Keine Konten, keine Datenbank, keine kostenpflichtigen APIs und keine externen JavaScript-, Schrift- oder Grafikdienste. Die App-Dateien werden statisch ausgeliefert; gelernt wird lokal.
+## 1. Vor dem Update sichern
 
-## 1. Auf einem Windows-PC starten
+Öffne deine bisherige App auf PC und iPhone jeweils dort, wo du tatsächlich lernst. Unter Einstellungen → Backup exportieren die JSON-Datei speichern. Gib den Dateien unterschiedliche Namen, etwa PC-vor-2.0.json und iPhone-vor-2.0.json. Der Fortschritt wird nicht zwischen Geräten synchronisiert.
 
-1. ZIP vollständig entpacken, beispielsweise nach Dokumente/ElektroMaster.
-2. Falls noch nicht vorhanden: Node.js LTS von https://nodejs.org installieren.
-3. Im entpackten Ordner **Starten.cmd** doppelklicken.
-4. Die App unter **http://localhost:4173** im Browser öffnen. Falls das Browserfenster vor dem Server bereit war, die Seite neu laden.
-5. Das geöffnete Serverfenster während der Nutzung offen lassen. Zum Beenden Strg+C drücken.
+Bewahre die Dateien privat auf. Lade sie nicht zu GitHub hoch. Lösche weder Browserdaten noch die installierte App. Notiere zum Vergleich XP, gelesene Inhalte und Prüfungsbestleistungen. Beende möglichst die laufende Prüfung vor dem Wechsel.
 
-Alternativ im Terminal des Ordners:
-```text
-node server.mjs
-```
+## 2. Dateien im vorhandenen GitHub-Projekt ersetzen
 
-Es müssen keine Pakete installiert werden. Der Server ist nur zum lokalen Start nötig, nicht für GitHub Pages. Die Datei index.html nicht direkt per Doppelklick öffnen: JavaScript-Module und Service Worker benötigen HTTP beziehungsweise HTTPS.
+1. ElektroMaster-2.0.zip vollständig entpacken.
+2. Dein **bestehendes Repository** öffnen. Unter Settings → Pages nachsehen, aus welchem Branch und Ordner deine bisherige App veröffentlicht wird. Diese Einstellungen beibehalten.
+3. Im Code-Bereich genau den bisherigen App-Ordner öffnen – dort muss bereits index.html liegen. Bei Veröffentlichung aus /docs ist dies der Ordner docs.
+4. Über Add file → Upload files die App-Dateien aus dem entpackten ElektroMaster-Ordner hochladen. Gleichnamige Dateien ersetzen; alle unten genannten neuen Dateien mitnehmen. Änderungen gemeinsam mit einer Nachricht wie „ElektroMaster 2.0“ speichern.
+5. Keine zusätzliche Ordnerebene anlegen: index.html muss am bisherigen Ort bleiben. CNAME, vorhandene GitHub-Workflows und andere eigene Repository-Dateien beibehalten.
+6. Die erfolgreiche Pages-Veröffentlichung abwarten. Deine **bisherige Webadresse** verwenden. Kein neues Repository und keine neue Domain anlegen.
 
-Der mitgelieferte Server bindet ausschließlich an den eigenen PC (127.0.0.1). Die localhost-Adresse funktioniert nicht als Verbindung vom iPhone zum PC. Für das iPhone die veröffentlichte HTTPS-Adresse verwenden.
+Erforderliche App-Dateien (alle gemeinsam aktualisieren):
 
-## 2. Kostenlos mit GitHub Pages veröffentlichen
+- index.html, style.css, app.js, engine.js, content.js
+- state.js, daily.js, knowledge.js, diagrams.js, features.js, platform.js
+- sw.js, manifest.webmanifest, icon.svg, icon-192.png, icon-512.png
+- .nojekyll (leere Datei; gegebenenfalls versteckte Dateien einblenden)
 
-Voraussetzung ist ein GitHub-Konto. Für den üblichen kostenlosen Weg ein **öffentliches Repository** verwenden. Der Quellcode wird damit öffentlich; der Lernfortschritt bleibt auf dem Gerät und gehört nicht ins Repository.
+Dokumentation, Tests und lokale Startdateien dürfen ebenfalls hochgeladen werden. Sie werden für den Browserbetrieb nicht benötigt. **Die ZIP-Datei allein hochzuladen aktualisiert die App nicht.**
 
-1. Auf GitHub ein neues öffentliches Repository anlegen, z. B. **elektromaster**.
-2. Unter **Add file → Upload files** die Dateien **aus dem entpackten ElektroMaster-Ordner** hochladen. index.html muss direkt im Repository-Hauptverzeichnis liegen, nicht unter einem zusätzlichen ElektroMaster-Unterordner.
-3. Änderungen mit **Commit changes** speichern. Standardbranch: meist **main**.
-4. Im Repository **Settings → Pages** öffnen.
-5. Unter **Build and deployment → Source** die Option **Deploy from a branch** auswählen.
-6. Branch **main** und Ordner **/(root)** auswählen; **Save**.
-7. Veröffentlichung abwarten. Unter Pages wird die tatsächliche Adresse angezeigt, normalerweise **https://DEIN-NAME.github.io/elektromaster/**.
-8. Die Adresse öffnen. Alle Lernbereiche sind ohne Konto nutzbar. Unten muss nach erfolgreicher Einrichtung **Offline bereit** erscheinen.
+Bei einem vorhandenen eigenen GitHub-Actions-Veröffentlichungsablauf die Dateien in dessen bisheriges Quellverzeichnis übernehmen und den bestehenden Ablauf beibehalten. Diese Übergabe enthält keine Änderung deiner GitHub-Konfiguration.
 
-Alle App-Pfade sind relativ; ein Repository-Unterpfad wird unterstützt. Es gibt keinen Buildschritt. Die leere Datei .nojekyll ist enthalten; bei Git-Nutzung mit hochladen. Node-Dateien und Dokumentation dürfen mit im Repository liegen, sie sind für die Ausführung im Browser nicht nötig.
+Offizielle Orientierung: [GitHub – Veröffentlichungsquelle](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-Minimal erforderliche Dateien:
-index.html, app.js, engine.js, content.js, style.css, sw.js, manifest.webmanifest, icon.svg, icon-192.png, icon-512.png und .nojekyll.
+## 3. Bestehende Installation auf PC und iPhone aktualisieren
 
-Offizielle Anleitung: [GitHub Pages – Veröffentlichungsquelle konfigurieren](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+1. Online gehen und die bisherige App-Adresse bzw. das vorhandene App-Symbol öffnen. Etwas Zeit zum Laden der neuen Dateien lassen.
+2. Falls noch Version 1.0 erscheint: alle offenen ElektroMaster-Fenster und Safari-Tabs dieser Adresse schließen, danach erneut öffnen. Ein wartendes Update kann erst dann aktiv werden. Gegebenenfalls noch einmal online laden und schließen.
+3. In Version 2.0 erscheinen Modulauswahl, Tägliches Training und Lexikon. Elektrotechnik auswählen und den übernommenen Fortschritt mit deinen Notizen vergleichen.
+4. Unter Einstellungen warten, bis „Offline bereit“ angezeigt wird. Ein aktuelles Backup exportieren und aufbewahren.
+5. Erst danach die App ohne Netz neu öffnen und ein Training sowie das Lexikon ausprobieren.
 
-**Veröffentlichungsstatus dieser Übergabe:** vorbereitet, aber noch nicht in einem GitHub-Konto veröffentlicht. Es wurde kein Repository und keine öffentliche Website angelegt.
+Die App bleibt unter derselben Adresse. Der alte Version-1-Speichereintrag wird nicht überschrieben. Bei der ersten Übernahme wird zusätzlich eine lokale Sicherung angelegt; sie ist unter Einstellungen → Sicherung vor Version 2.0 exportierbar. Diese lokale Kopie ersetzt kein außerhalb des Browsers gespeichertes Backup.
 
-## 3. Auf dem iPhone installieren
+Bei späteren Updates gibt es Einstellungen → Nach App-Updates suchen. „Update mit Backup übernehmen“ ist verfügbar, wenn ein Update wartet. Vorher die offene Lerneinheit abschließen und die angebotene Backup-Datei tatsächlich speichern.
 
-1. Die veröffentlichte **HTTPS-Adresse** in Safari öffnen.
-2. Vollständig laden lassen, bis **Offline bereit** angezeigt wird.
-3. Das Teilen-Menü öffnen; je nach Safari-Anordnung zuerst das Seitenmenü und dann **Teilen**.
-4. **Zum Home-Bildschirm** wählen. Falls vorhanden, **Als Web-App öffnen** aktivieren.
-5. **Hinzufügen** wählen.
-6. ElektroMaster über das neue Symbol starten und einmal online vollständig laden lassen.
-7. Zum Prüfen Flugmodus aktivieren, die App schließen und erneut öffnen. Lernmodule und Aufgaben sollten weiter erreichbar sein.
+**Falls Fortschritt fehlt:** zunächst richtige Adresse, Browserprofil und App-Aufruf prüfen. Safari und die Home-Bildschirm-App können getrennte Speicher besitzen. Anschließend das passende private Backup importieren; der Import ersetzt den Stand dieses Geräts. Keine leere Sicherung über deine alte Datei speichern.
 
-Offizielle Anleitung: [Apple – Website als App auf dem iPhone verwenden](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios).
+Für eine zusätzliche Erstinstallation beschreibt [Apple das Hinzufügen einer Website zum Home-Bildschirm](https://support.apple.com/en-eg/guide/iphone/iphea86e5236/ios). Für das Update einer vorhandenen Installation ist eine Neuinstallation nicht vorgesehen.
 
-Safari und Home-Bildschirm-App können unterschiedliche Speicherbereiche haben. Fortschritt bei Bedarf per Backup übertragen. Eine erstmalige Einrichtung ohne Netz ist nicht möglich. Browser und Betriebssystem können Offline-Daten bei Speicherknappheit entfernen.
+## 4. Neue Funktionen benutzen
 
-## 4. So lernst du mit ElektroMaster
+**Hilfe:** In einer normalen Aufgabe „Hilfe / Nachschlagen“ öffnen. Passende Themen oder Suchbegriffe wählen. Die Beispiele sind eigenständig; deine Eingabe bleibt beim Schließen erhalten. Im Prüfungsmodus steht die Hilfe nicht zur Verfügung.
 
-- **Lernmodule:** 61 kompakte Module mit Theorie, Beispielen, Fehlerhinweisen und Verständnisfragen. Gelesen-Markierungen sind getrennt vom Wissensstand.
-- **Quiz:** Vier Antwortmöglichkeiten, zufällige Reihenfolge, sofortige Lösungserklärung.
-- **Formeltrainer:** Formelauswahl, Formelzeichen, Umstellen, Lückenergänzungen, technische Formelwahl, Einheiten und Anwendungen.
-- **Rechentrainer:** 16 Vorlagen mit zufälligen Werten. Ergebnisse selbst eingeben und die Einheit wählen. Dezimalkomma und Dezimalpunkt sind möglich; keine Tausendertrennzeichen verwenden. Auch wissenschaftliche Schreibweise wie 1,5e-3 wird verstanden.
-- **Formelsammlung:** 35 Beziehungen mit Symbolen, SI-Einheiten, Umstellungen in Einzelschritten, Beispielen und Fehlerhinweisen.
-- **Prüfung:** 30 Minuten; 8 MC-Fragen aus vier Gebieten plus 4 mehrteilige Rechenaufgaben. Teilantworten zählen jeweils einen Punkt. Lösungen erst nach Abgabe.
-- **Wiederholen:** Falsche und unsichere Antworten sind sofort wieder fällig. Sichere Treffer verlängern die Abstände auf 1, 3, 7, 14, 30 und 60 Tage.
+**Tagestraining:** MC und Rechnen lassen sich unabhängig beginnen, unterbrechen und fortsetzen. Standard: zehn Fragen bzw. fünf Aufgaben. Für das Tagesziel genügt ein vollständig bearbeitetes Training; richtige Antworten sind dafür keine Voraussetzung. Jede Frage muss beantwortet, jedes Rechenfeld mit Zahl und Einheit abgegeben werden. Eine inhaltlich ernsthafte Bearbeitung kann die App darüber hinaus nicht feststellen.
 
-Die Zeit einer Prüfung läuft auch bei geschlossenem Fenster weiter. Bei erneutem Öffnen wird eine abgelaufene Prüfung ausgewertet. Es läuft kein Hintergrunddienst: Die tatsächliche Auswertung erfolgt beim nächsten aktiven Aufruf.
+Die Auswahl bleibt für den Tag fest. Änderungen des Umfangs in Einstellungen gelten für den nächsten noch nicht angelegten Tag. Offene frühere Tagestrainings bleiben zugänglich. Ein Abschluss nach Mitternacht zählt am Abschlusstag. Freiwillige Wiederholungen ändern die Erfolgsstatistik, geben aber weder XP noch einen neuen Trainingstag.
 
-Rechenantworten werden mit 1 % relativer Toleranz bewertet, bei sehr kleinen Ergebnissen mindestens 0,00001 in der abgefragten Einheit. Eine falsche Einheit ergibt keinen Punkt. Mehrteilige Aufgaben geben Teilpunkte; für die Fortschrittsquote zählt eine Aufgabe nur dann als richtig, wenn alle Teilantworten richtig sind.
+Die neue Tagestrainingsserie beginnt mit den Abschlüssen in Version 2.0. Alte Aktivitäten bleiben in der Statistik erhalten; sie werden nicht nachträglich als abgeschlossene Tagestrainings gewertet. Andere Lernbereiche bleiben auch bei offenem Tagesziel frei.
 
-## 5. Motivation und Fortschritt
+**Lexikon:** Volltextsuche, Kategorie und Unterkategorie eingrenzen; Einträge als Favoriten speichern. Verwandte Themen öffnen weitere Einträge. Formeln bleiben zusätzlich über die bisherige Formelsammlung erreichbar.
 
-- 20 XP für eine vollständig richtige Antwort, sonst 5 XP.
-- Pro Aufgabentyp und Kalendertag nur einmal XP, um bloßes Wiederholen nicht übermäßig zu belohnen.
-- Alle 200 XP steigt das Level; ab Level 2 ist eine Antriebsherausforderung verfügbar.
-- Tagesziele zählen verschiedene Aufgabentypen (5, 10 oder 20), nicht nur Klicks.
-- Eine Lernserie zählt aufeinanderfolgende lokale Kalendertage mit bearbeiteten Aufgaben.
-- Drei sichere richtige Antworten in Folge bedeuten „gefestigt“. Ein Fehler oder „unsicher“ setzt diese Serie zurück.
-- Der Gesamtfortschritt umfasst 139 feste Fragen und 16 Rechenvorlagen. Zahlenvarianten zählen als derselbe Aufgabentyp.
-- Eine Formel gilt als gefestigt, wenn alle zugehörigen festen Fragen gefestigt sind.
-- Die adaptive Auswahl beginnt leichter und berücksichtigt zuletzt erreichte Ergebnisse. Fällige Fragen haben Vorrang.
-- Prüfungsbestleistungen, Themenquoten und Lernaktivität sind in der Statistik sichtbar.
+**Modulauswahl:** Nur Elektrotechnik ist freigeschaltet. Die vier weiteren Bereiche sind als Planung gekennzeichnet.
 
-Die Aufgaben sind Lernmaterial; die technische Kurzprüfung ersetzt keine vollständige IHK-Prüfung.
+## 5. Bestehende Lernfunktionen
 
-## 6. Backup, Import und Datenspeicherung
+Lernmodule, Quiz, Formeltrainer, Rechentrainer, Wiederholungen und die 30-minütige Technikprüfung bleiben erhalten. Prüfungszeit läuft bei geschlossenem Fenster weiter; ausgewertet wird beim nächsten Aufruf. Der Rechentrainer akzeptiert Dezimalkomma und Punkt; keine Tausendertrennzeichen verwenden. Bewertung: 1 % relative Toleranz, mindestens 0,00001 in der gefragten Einheit; falsche Einheit gibt keinen Punkt. Mehrteilige Aufgaben geben Teilpunkte.
 
-Unter **Einstellungen → Backup exportieren** eine JSON-Datei speichern, z. B. in Dateien/iCloud Drive auf dem iPhone oder auf einem privaten Datenträger. Diese Nutzung eines eigenen Dateispeichers ist optional und keine App-Cloudanbindung.
+Normale Aufgaben vergeben weiterhin 20 XP bei vollständig richtiger Antwort, sonst 5 XP, begrenzt je Aufgabentyp und Kalendertag. Tagesabschlüsse ergänzen 50 XP, höchstens einmal pro Modus und Abschlusstag. Alle 200 XP steigt das Level. Wiederholungen bleiben lernstandsabhängig.
 
-Unter **Backup importieren** die Datei auswählen und das Ersetzen bestätigen. Der Import:
-- prüft Formatversion und Datenstruktur;
-- ersetzt den Fortschritt dieses Geräts, statt Datensätze zusammenzuführen;
-- übernimmt XP, Antworten, Wiederholungsabstände, Lerntage, gelesene Module, Ziele, Farbschema und Prüfungsergebnisse;
-- übernimmt keine laufende Prüfung oder Trainingseinheit;
-- verändert bei einem ungültigen Backup den vorhandenen Fortschritt nicht.
+## 6. Backups und lokale Nutzung
 
-Es gibt keine automatische Synchronisation zwischen Geräten. Exportiere vor Browserbereinigung, Gerätewechsel oder einem Wechsel der Webadresse. Browserdaten, privater Modus, andere Browserprofile und andere Ursprünge können getrennte Speicher verwenden. Die App zeigt Speicherfehler an; dann umgehend exportieren.
+Version 2.0 importiert Sicherungen der Versionen 1 und 2. Der Import ersetzt den vorhandenen Stand nach Bestätigung; ungültige Dateien werden abgewiesen. Tagestrainings einschließlich Teilfortschritt und Favoriten werden in V2-Backups mitgenommen. Eine laufende normale Einheit oder Prüfung wird beim Dateiimport nicht wiederhergestellt; beim normalen Neuladen auf demselben Gerät schon. V2-Backups sind nicht für Version 1.0 geeignet.
 
-## 7. Umfang und fachliche Einordnung
+Alle Lernstände bleiben im Browser. Kein Konto, keine automatische Gerätesynchronisation. Bei Speicherwarnungen sofort exportieren: der verfügbare Browserspeicher ist begrenzt und gespeicherte Tagestrainings wachsen über die Zeit.
 
-Die Module decken die im Auftrag genannten technischen Themen kompakt ab. Die Tiefe variiert: Es gibt ausführlichere Rechenwege für Kernformeln, während Schutztechnik, SPS, Regelung und Fehlersuche zunächst Grundlagenmodule sind. Prinzipskizzen werden auf Themengebietsebene wiederverwendet; dies ist kein Schaltungssimulator und kein vollständiges Tabellenbuch.
+Zum lokalen Test unter Windows: ZIP entpacken, Node.js bereitstellen, Starten.cmd öffnen und http://localhost:4173 aufrufen. Keine Pakete installieren. Das Serverfenster offen lassen. index.html nicht direkt doppelklicken. Der lokale Test hat einen anderen Speicher als deine GitHub-Adresse und übernimmt dessen Lernstand nicht automatisch. Die localhost-Adresse ist nicht vom iPhone aus erreichbar.
 
-IHK-orientiert bedeutet hier eigenständige technische Übungsaufgaben und betriebliche Szenarien, nicht offizielle Prüfungsfragen oder eine vollständige Abbildung des Rahmenplans. Recht, Betriebswirtschaft, Personalführung, Fachgespräch und sämtliche normativen Detailprüfungen sind nicht vollständig umgesetzt. Die technische Prüfungsverordnung nennt auch Organisation sowie Führung und Personal.
+## 7. Was noch zu prüfen ist
 
-Es werden keine Tabellenbuchtexte oder Buchtabellen kopiert. Die Lerninhalte sind eigene Erklärungen und Beispiele. Normative Grenzwerte und reale Anlagenentscheidungen müssen anhand gültiger Regeln und der konkreten Anlage geprüft werden; die App erteilt keine Arbeitsfreigabe.
-
-Fachlicher Bezug:
-- [BGHM: Arbeiten an elektrischen Anlagen](https://www.bghm.de/arbeitsschuetzer/themen/elektrotechnik/arbeiten-an-elektrischer-anlagen-und-betriebsmitteln)
-- [Prüfungsverordnung § 5](https://www.gesetze-im-internet.de/elekmeistprv_2004/__5.html)
-
-## 8. Prüfung dieser Übergabe
-
-Automatisierte Logiktests sind bestanden. Eine visuelle Browserkontrolle, echte Offline-Neuladung und Installation auf einem realen iPhone konnten in der Arbeitsumgebung nicht abgeschlossen werden, weil die lokale Vorschauverbindung scheiterte. Diese Punkte sind **unverifiziert**, nicht als bestanden ausgewiesen. Details und ein kurzer Abnahmetest stehen in PRUEFBERICHT.md.
+Automatisierte Tests sind bestanden. Die tatsächliche Darstellung in Safari/Edge, Installation auf einem echten iPhone und echte Offline-Neuladung müssen noch am Gerät geprüft werden. Die Checkliste steht in PRUEFBERICHT.md. Es wurde nichts in deinem GitHub-Konto veröffentlicht oder an deinem tatsächlichen Gerätefortschritt verändert.

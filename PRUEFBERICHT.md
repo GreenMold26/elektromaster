@@ -1,78 +1,45 @@
-# Prüfbericht – ElektroMaster 1.0
+# ElektroMaster 2.0 – Prüfbericht
 
-Stand: 24. Oktober 2026
+Stand: 5. November 2026. Geprüft wurde das ausgelieferte lokale Quellprojekt. Es fand kein Zugriff auf den tatsächlichen Lernstand des Nutzers und keine Veröffentlichung bei GitHub statt.
 
-## Bestandene automatisierte Prüfungen
+## Automatisierte Prüfung: bestanden
 
-- 139 feste Fragen: eindeutige IDs, jeweils vier verschiedene Optionen, gültige Lösungsindizes, gültige Modul- und Themenverweise.
-- Zufälliges Mischen der Antworten erhält den korrekten Lösungsindex.
-- 16 Rechenvorlagen, jeweils 200 erzeugte Aufgaben: insgesamt 3.200 Aufgaben mit unabhängigen Referenzrechnungen verglichen.
-- Physikalisch positive, endliche Ergebnisse innerhalb der vorgesehenen Parameterbereiche.
-- Dezimalkomma, Dezimalpunkt und wissenschaftliche Schreibweise.
-- Zurückweisung ungültiger und mehrdeutiger Zahleneingaben.
-- Toleranz innerhalb 1 % akzeptiert; 2 % Abweichung verworfen.
-- Falsche Einheit wird verworfen.
-- Lernfortschritt, sichere Antwortserien, Unsicherheit und Fehler.
-- Wiederholungsabstände und Tagesfolge.
-- Keine mehrfachen XP für dieselbe Aufgaben-ID am selben Tag.
-- Backup-Rundlauf erhält den Datenbestand; ungültige Versionen und Statistikwerte werden abgewiesen.
-- Adaptive Auswahl startet mit Grundlagen.
-- Laufzeitdateien vorhanden und in der Offline-Dateiliste enthalten; relative Manifest-Pfade.
-- 42.930 einzelne Assertions im Daten-/Rechenkern-Test bestanden.
-- Zusätzlich 1.400 Auswertungen der tatsächlich angezeigten 35 Formeln und ihrer Umstellungen mit je 20 Wertekombinationen bestanden.
-- JavaScript-Syntaxprüfung bestanden.
+Alle sechs Testprogramme wurden am Übergabetag erfolgreich ausgeführt:
 
-## Bedienlogik ohne echten Browser
+| Test | Ergebnis |
+|---|---|
+| tests.mjs | 42.930 Prüfungen; 3.200 erzeugte Rechenaufgaben, 139 Fragen, 35 Formeln, 61 Lektionen und 16 Vorlagen |
+| tests-formulas.mjs | 1.400 Prüfungen angezeigter Formeln und Umstellungen |
+| tests-ui.mjs | Bisherige Navigation, Quiz, numerische Eingaben, Prüfung, Unterbrechen/Fortsetzen, Import, ungültiger Import und Zeitablauf |
+| tests-v2.mjs | 862 Prüfungen für Migration, Backup, Datum, Tagestraining, Hilfe, Lexikon und SVG-Zuordnung |
+| tests-ui-v2.mjs | Hilfe/Suche ohne Eingabeverlust, Prüfungssperre, getrennte Tagesläufe, Neuladen, falsche Antworten als Abschluss, Wiederholung ohne XP, Favoriten, Mitternacht und Import |
+| tests-offline.mjs | Worker-Modell mit 16 Ressourcen, Unterpfad, Cache-Abruf ohne Netz, Navigationsfallback und kontrollierter Aktivierung |
 
-tests-ui.mjs verwendet eine minimale DOM-Attrappe und prüft:
+Zusätzlich wurden die lokalen SVG-Vorschautafeln gerendert und visuell geprüft. Die lokale HTTP-Vorschau war während der Entwicklung mit Status 200 erreichbar. Die ursprüngliche content.js ist bytegleich mit Version 1.0.
 
-- Navigation durch alle Hauptbereiche.
-- Quiz: zehn Antworten bis zur Auswertung.
-- Rechentraining: 30 numerische Teilantworten bis zur Auswertung.
-- Prüfung: Zurück/Vorwärts, Unterbrechen/Fortsetzen und gespeicherte Auswahl.
-- Keine unmittelbare Lösungsanzeige während der Prüfung.
-- Prüfungsauswertung und Speicherung.
-- Erfolgreicher Backup-Import sowie Ablehnung eines fehlerhaften Imports.
-- Automatische Abgabe nach Ablauf der Zeit.
+Die UI-Tests verwenden ein DOM-Modell. Die Offline-Tests verwenden ein Service-Worker-/Cache-Modell. Beides ersetzt keine Prüfung im tatsächlichen Browser. Migrationstests arbeiten mit Testdaten, nicht mit dem privaten Gerätefortschritt.
 
-Diese Tests sind bestanden. Die DOM-Attrappe testet die App-Logik, nicht das Layout oder tatsächliche Browser-APIs.
+## Noch offen: echte Browser- und Geräteabnahme
 
-## Noch nicht praktisch verifiziert
+Eine vollständige visuelle Browserprüfung konnte wegen einer Zugriffsbegrenzung der Computersteuerung nicht abgeschlossen werden. Tatsächliche iPhone-Installation, Safari-Verhalten, Tastatur/Fokus, Dark-/Light-Mode-Darstellung auf dem Gerät und Offline-Neustart sind nicht als bestanden ausgewiesen.
 
-Die Vorschau konnte aus der Arbeitsumgebung keine nutzbare Verbindung zum lokalen Server aufbauen. Der Browser meldete einen Verbindungs-Timeout. Auch der lokale HTTP-Zugriff blieb nach freigegebenem Netzwerkzugriff erfolglos.
+Nach dem Update auf der vorhandenen Adresse bitte prüfen:
 
-Daher sind folgende Punkte offen und werden nicht als bestanden bezeichnet:
+1. Vorheriges Backup vorhanden; XP, gelesene Inhalte und Prüfungsbestleistung stimmen nach dem Update überein.
+2. Modulauswahl öffnen; Elektrotechnik nutzbar, geplante Bereiche nicht als fertige Kurse zugänglich.
+3. Eine Rechenantwort teilweise eingeben; Hilfe öffnen, suchen und schließen. Eingabe bleibt erhalten. Auf kleinem Bildschirm Schaltbildbeschriftungen lesen bzw. horizontal scrollen.
+4. Tages-MC teilweise bearbeiten, Rechentraining starten, App schließen und beide Stände fortsetzen.
+5. Ein Tagestraining mit teilweise falschen Antworten abschließen. Tagesziel erreicht und Quote getrennt sichtbar. Wiederholung erhöht XP nicht.
+6. Lexikoneintrag suchen, favorisieren, neu öffnen. Formelschnellzugriff funktioniert.
+7. Prüfung beginnen: keine Hilfe und kein Nachschlagezugriff. Zeitablauf und Abgabe prüfen.
+8. „Offline bereit“ abwarten, Netz ausschalten, App vollständig schließen und erneut öffnen. Tagestraining, Lexikon und Schaltbilder erreichbar.
+9. V2-Backup exportieren. Import nur auf einem gesicherten Teststand prüfen, da er vorhandenen Fortschritt ersetzt.
+10. Nach lokalem Datumswechsel neue feste Tagesauswahl und erhaltene frühere Bearbeitungsstände kontrollieren.
 
-- Visuelle Kontrolle auf kleinen iPhone-Bildschirmen sowie Windows-Browsern.
-- Echte Installation über Safari beziehungsweise Edge/Chrome.
-- Service-Worker-Installation und echter Offline-Kaltstart.
-- Echter Dateidownload und Dateiauswahldialog für Backups.
-- Live-Veröffentlichung in einem GitHub-Pages-Repository.
-- Unabhängige elektrotechnische Fachbegutachtung aller Texte und Aufgaben.
+## Bekannte Grenzen
 
-Offline-Funktion und Installierbarkeit sind implementiert, die vollständige Dateiliste und Konfiguration wurden geprüft. Das ersetzt keinen Test auf realen Geräten.
-
-## Kurzer Abnahmetest nach Veröffentlichung
-
-1. HTTPS-Adresse öffnen und auf „Offline bereit“ warten.
-2. Auf Windows und auf dem iPhone die Navigation, Lesbarkeit und Erreichbarkeit aller Schaltflächen prüfen.
-3. Ein Quiz beantworten; prüfen, ob Lösungen erst nach „Antwort prüfen“ erscheinen.
-4. Rechentrainer: richtigen Wert, falschen Wert und falsche Einheit ausprobieren.
-5. Seite neu laden und überprüfen, ob XP und laufende Einheit erhalten bleiben.
-6. Backup exportieren, zusätzlich eine Aufgabe lösen, Backup wieder importieren. Der frühere Stand muss wiederhergestellt sein.
-7. Eine ungültige JSON-Datei importieren: Fehlermeldung, bestehender Fortschritt unverändert.
-8. Prüfung beginnen, vor/zurück navigieren, Seite neu laden, fortsetzen und abgeben. Punktzahl und Musterlösungen prüfen.
-9. App installieren, einmal online starten, danach im Flugmodus vollständig schließen und erneut öffnen.
-10. Im Offlinezustand Lernmodule, Formelsuche, Quiz und Rechentrainer öffnen; danach wieder online ein Backup erstellen.
-
-## Reproduktion
-
-Im Projektordner mit installiertem Node.js:
-
-```text
-npm test
-```
-
-Es sind keine Paketdownloads erforderlich. Die Formelauswertung der Tests verwendet einen kleinen Ausdrucksparser und führt keine Texte mit eval aus.
-
-Die App kann auf mehrere hundert Fragen erweitert werden. Vor einem erweiterten Release neue Inhalte fachlich gegenprüfen, Rechenreferenzen ergänzen, die Cache-Version erhöhen und die Gerätekontrolle wiederholen.
+- Keine automatische Synchronisation zwischen PC und iPhone.
+- Endlicher lokaler Speicher; historische Tagesläufe werden noch nicht automatisch archiviert.
+- Kein vollständiger IHK-Rahmenplan, kein vollständiges Tabellenbuch und kein Schaltungssimulator.
+- Andere Lernmodule sind nur vorbereitet. Vereinfachte Schaltbilder sind Lernhilfen, keine Anlagenunterlagen.
+- Die GitHub-Konfiguration und etwaige Änderungen deiner Live-Version seit dem vorhandenen 1.0-Quellstand wurden nicht eingesehen.

@@ -10,12 +10,12 @@ globalThis.setInterval=fn=>{timer=fn;return 1;};
 globalThis.setTimeout=()=>1;
 const click=(action,data={})=>listeners.click({target:{closest:selector=>selector==='[data-action]'?{dataset:{action,...data}}:null}});
 const nav=route=>listeners.click({target:{closest:selector=>selector==='[data-route]'?{dataset:{route}}:null}});
-const saved=()=>JSON.parse(store.get('elektromaster.v1'));
+const saved=()=>JSON.parse(store.get('elektromaster.v2'));
 const html=()=>el('#app').innerHTML;
 const change=target=>listeners.change({target:{dataset:{},...target}});
 const input=target=>listeners.input({target});
 await import('./app.js');
-assert.match(html(),/Wissen, das bleibt/);
+assert.match(html(),/Was möchtest du heute lernen/); nav('dashboard'); assert.match(html(),/Wissen, das bleibt/);
 for(const r of ['learn','formulas','train','exam','review','stats','settings']){nav(r);assert.ok(html().includes('<main'));assert.ok(!html().includes('undefined'));}
 nav('dashboard');click('quick');assert.match(html(),/Aufgabe 1 von 10/);
 for(let i=0;i<10;i++){const q=saved().active.items[i];click('choose',{choice:String(q.answer)});click('check');assert.match(html(),/Richtig gelöst/);click('next');}

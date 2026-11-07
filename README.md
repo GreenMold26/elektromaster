@@ -1,11 +1,17 @@
-# ElektroMaster 1.0
+# ElektroMaster 2.0
 
-Beginne mit [ANLEITUNG.md](ANLEITUNG.md).
+Weiterentwicklung der vorhandenen ElektroMaster-1.0-App mit erhaltenen Lerninhalten und Fortschrittskennungen.
 
-Windows: ZIP entpacken, Node.js LTS installieren (falls erforderlich), Starten.cmd doppelklicken.
+**Zuerst [ANLEITUNG.md](ANLEITUNG.md) lesen und auf jedem Gerät ein Backup exportieren.**
 
-- [Start, GitHub Pages, iPhone und Backup](ANLEITUNG.md)
+- [Update, iPhone und Nutzung](ANLEITUNG.md)
+- [Neuerungen](NEUERUNGEN.md)
+- [Bestandsprüfung](BESTANDSANALYSE.md)
 - [Technische Dokumentation](TECHNIK.md)
 - [Prüfergebnisse und offene Gerätekontrollen](PRUEFBERICHT.md)
 
-61 Lernmodule · 35 Formeln · 139 feste Fragen · 16 variable Rechenvorlagen.
+61 bisherige Lerneinheiten · 35 Grundformeln · 139 feste Fragen · 16 variable Rechenvorlagen · 62 Lexikoneinträge.
+
+Lokal: Node.js installieren, ZIP entpacken, Starten.cmd öffnen. Keine Paketinstallation nötig. Alternativ: node server.mjs, anschließend http://localhost:4173 öffnen.
+
+Vorbereitet für dein vorhandenes GitHub-Pages-Projekt. Noch nicht im GitHub-Konto veröffentlicht.

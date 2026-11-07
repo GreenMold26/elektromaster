@@ -1,86 +1,60 @@
-# Technische Dokumentation – ElektroMaster 1.0
+# ElektroMaster 2.0 – technische Dokumentation
 
 ## Architektur
 
-Statische HTML/CSS/ES-Module ohne Framework, Paketinstallation oder Laufzeitabhängigkeiten. Unterstützungsziel sind aktuelle Safari-, Edge- und Chrome-Versionen. Externe Ressourcen werden ausschließlich über ausdrücklich angeklickte Quellenlinks aufgerufen.
+Statische PWA ohne Buildschritt, Framework, externe Schrift-/Bilddienste oder Laufzeit-API. ES-Module, CSS, native HTML-Dialoge und lokale SVGs. GitHub Pages kann die Dateien unverändert ausliefern. Node.js ist nur für den lokalen Server und Tests nötig.
 
-- index.html: Einstieg und PWA-Metadaten
-- app.js: Rendering, Navigation, Training, Prüfung, Dateiexport/-import
-- content.js: Themen, 61 Lernmodule, 35 Formeln, 139 feste Fragen
-- engine.js: 16 Rechengeneratoren, Auswertung, Wiederholung, Fortschritt und Importvalidierung
-- style.css: Dark/Light, responsive Darstellung, Touch-Elemente
-- sw.js: versionierter Offline-Cache aller Laufzeitdateien
-- manifest.webmanifest und Icons: Installation und Erscheinungsbild
-- server.mjs: minimaler lokaler Server, Port 4173, Bindung an 127.0.0.1
-- tests.mjs, tests-formulas.mjs, tests-ui.mjs: reproduzierbare Tests
+| Datei | Verantwortung |
+|---|---|
+| content.js | Unveränderte V1-Inhalte: 61 Lektionen, 35 Formeln, 139 Fragen |
+| engine.js | Bestehende Aufgaben-, Bewertungs-, Wiederholungs- und Statistiklogik; optional unterdrückte XP für Wiederholungen |
+| app.js | Bestehende Oberfläche mit neuen Routen, Ereignissen, Hilfe und Updateablauf |
+| state.js | V2-Datenstruktur, Validierung, V1-Übernahme, Schutz vor Überschreiben ungültiger Daten |
+| daily.js | Kalenderauswahl, feste Aufgaben, unabhängige Tagesläufe, Abschluss, Bonus und Serie |
+| knowledge.js | 62 Artikel, Kategorien, Formelverweise, Suchindex und Aufgaben-Themen-Zuordnung |
+| diagrams.js | Lokale, aus gegebenen Aufgabenwerten beschriftete SVGs |
+| features.js | Darstellung von Modulauswahl, Tagestraining, Lexikon und Hilfefenster |
+| platform.js | Modulregister; Elektrotechnik aktiv, vier geplante Module |
+| sw.js | Versionierter Cache, lokale Offline-Ressourcen, kontrollierte Aktivierung |
 
-Die App arbeitet ohne Backend. localStorage-Schlüssel: **elektromaster.v1**. Backup-Schema: Version 1. Fortschritt, Lerntage und laufende Einheit werden nach Interaktionen gespeichert. Die App ist für eine aktive Sitzung pro Browserprofil gedacht; gleichzeitiges Lernen in mehreren Tabs kann nach dem Prinzip „letzter Schreibzugriff gewinnt“ Daten überschreiben.
+## Speicherung und Migration
 
-## Inhalte erweitern
+V1-Schlüssel: elektromaster.v1. V2-Schlüssel: elektromaster.v2. Sicherheitskopie: elektromaster.before-v2.
 
-Formeldatensätze stehen in rows und algebraSteps. Die Reihenfolge bestimmt die IDs f0 bis f34. Bestehende Einträge daher nicht umsortieren; neue Einträge hinten anfügen. Drei Kernfragen je Formel werden aus der Formel, Umstellung und Symbolbedeutung erstellt. Plausible Ablenkantworten explizit pflegen.
+Beim Start hat ein vorhandener V2-Stand Vorrang. Andernfalls wird V1 validiert, ergänzt und unter V2 gespeichert. Vor dem ersten Schreiben wird der ursprüngliche V1-Text einmalig unter dem Sicherheitskopieschlüssel gesichert. V1 selbst bleibt unangetastet. Bei ungültigen Daten verhindert loadBlocked weitere Speicherzugriffe; ein Export der Originaldaten und ein gültiger Import ermöglichen die Wiederherstellung. Schreibfehler werden angezeigt; der aktuelle Stand bleibt zunächst nur im Arbeitsspeicher.
 
-Konzeptmodule stehen in concepts und besitzen IDs c0 bis c25. Die Verständnisfrage entsteht aus Frage, richtiger Antwort, drei Ablenkantworten und Erklärung. Zusatzfragen stehen in extra. IDs über Releases stabil halten, damit Lernfortschritt erhalten bleibt.
+Die bestehenden Felder für XP, Aufgabenstatistiken, Wiederholungstermine, Aktivitätstage, gelesene Lektionen, Prüfungsergebnisse, Theme und Ziel bleiben erhalten. Neue Felder: daily, dailySettings, dailyRewards, favorites, helpUses, moduleData und selectedModule. Die IDs des Bestands bleiben gleich. Alte Aktivitätstage bleiben gespeichert; die neue Tagestrainingsserie wird aus abgeschlossenen Tagesläufen abgeleitet.
 
-Jede feste Frage benötigt:
-- id, lesson, group, level
-- kind und type
-- prompt, vier unterschiedliche options, answer als Index
-- explanation
+Elektrotechnik verwendet zur Kompatibilität weiterhin die bisherigen Felder auf der Wurzelebene. moduleData reserviert getrennte Bereiche für spätere Module. Das Modulregister ist eine Vorbereitung, noch kein allgemeiner Loader für beliebige zusätzliche Lernpakete. Ein neues Modul benötigt Daten, Darstellung und einen eigenen Statistikadapter.
 
-Gruppen: basis, ac, machine, industry. Stufen: 1 Grundlagen, 2 Aufbau, 3 Meistertechnik (in Version 1 bei komplexen Rechenvorlagen). Die Auswahl der Antworten wird beim Trainingsstart gemischt; der korrekte Index wird mitgeführt.
+Tagesläufe speichern vollständige Aufgaben, Reihenfolge, Eingaben, Bewertungen und Position. Zahlenaufgaben enthalten zusätzlich ihren Seed. Es gibt keine automatische Löschung alter Tage; der Speicher wächst mit der Nutzung. Speicherwarnungen erfordern ein externes Backup. Es wird keine unbegrenzte Aufbewahrung im Browserspeicher zugesichert.
 
-## Rechenvorlagen erweitern
+Dateiexport enthält den Lernstand ohne aktive normale Einheit/Prüfung. Tagesläufe behalten ihren Teilfortschritt. Dateiimport akzeptiert V1/V2, validiert IDs, Aufgaben, Einheiten, Bewertungen, Datum und Umfang und ersetzt nach Bestätigung den Stand. Lokales Neuladen stellt auch eine gültige aktive Einheit wieder her. Import und Export übertragen keine Offline-Caches.
 
-In calcTypes eine stabile ID ergänzen. In generate(id, rng) eine Fallbehandlung mit prompt, values und fields hinzufügen.
+## Tagestraining und Zeit
 
-Ein Ergebnisfeld enthält:
-- label: gesuchte Größe
-- answer: exakter numerischer Wert, nicht vorzeitig gerundet
-- unit: erwartete Einheit
-- steps: vollständig lesbarer Lösungsweg
+Lokale Datumskennungen und Kalenderarithmetik verwenden dayKey und setDate statt fester 24-Stunden-Abstände. Die Auswahl wird beim ersten Aufruf eines Tages erzeugt und sofort gespeichert. MC berücksichtigt Themen, Stufen, Schwächen und kürzlich verwendete Fragen. Zahlenaufgaben verwenden verschiedene Vorlagen und deterministische Seeds. Bereits vorhandene Tagesdaten werden nicht neu ausgewürfelt. Umfangänderungen beeinflussen nur zukünftige, noch nicht erzeugte Tage.
 
-Bei neuen Einheiten die Einheitenliste der Oberfläche erweitern. In tests.mjs eine unabhängige Referenzrechnung unter refs ergänzen. Der injizierbare Zufallsgenerator ermöglicht reproduzierbare Tests.
+Jeder Modus besitzt einen eigenen Lauf. syncDaily speichert den aktiven Stand im Tagesdatensatz. Abschluss setzt vollständige Eingaben und Bewertungen voraus, nicht richtige Antworten. completedOn bezeichnet den tatsächlichen lokalen Abschlusstag. finishDaily ist idempotent. Pro Modus und Abschlusstag gibt es höchstens einen Bonus. Replay-Läufe beeinflussen weder Bonus noch Trainingstage; record erhält reward:false, damit auch normale Antwort-XP entfallen. Die Lernstatistik kann sich durch Wiederholung weiterhin ändern.
 
-Bewertung: maximaler Fehler max(|Sollwert| · 0,01; 0,00001), Einheit muss exakt der erwarteten Auswahl entsprechen. Zahlenparser akzeptiert Komma oder Punkt und wissenschaftliche Schreibweise, aber keine Tausendertrennzeichen oder angehängte Einheiten.
+Eine Serie reicht vom heutigen Tag rückwärts, oder vom gestrigen Tag, wenn heute noch kein Abschluss vorliegt. Verstellen der Geräteuhr kann bei einer rein lokalen App nicht manipulationssicher verhindert werden.
 
-## Lernmodell
+## Hilfe, Lexikon und Bilder
 
-stats[id] speichert attempts, correct, run, due, last, score und group. Eine sichere vollständig richtige Antwort erhöht run. Fehler und Unsicherheit setzen run auf 0. Intervalle: 0, 1, 3, 7, 14, 30, 60 Tage. Zeitstempel sind Millisekunden seit Unix-Epoche; Lerntage verwenden das lokale Kalenderdatum.
+Feste Fragen verweisen auf die bestehenden Lektions-IDs. Alle 16 Rechenvorlagen haben explizite Zuordnungen zu einem oder mehreren Artikeln. Das Lexikon nutzt die Grundformeln aus content.js; ergänzende Formeln, Erklärungen, Einheiten und eigene Beispiele liegen in knowledge.js. Die Suche berücksichtigt Titel, Erklärung, Beispiele und Formelzeichen und normalisiert deutsche Sonderzeichen.
 
-Gefestigt: run ≥ 3. Im Wiederholungsmodus erscheinen nur bereits bearbeitete fällige Aufgaben; Rechenvorlagen werden dafür mit neuen Werten erzeugt. Es gibt keine externe KI.
+Hilfe ist ein natives Dialogelement, ohne Neuaufbau der Aufgabenfelder. Schließen stellt den Fokus wieder her. Prüfungsmodus sperrt sowohl den Hilfeaufruf als auch die Navigation in Nachschlagebereiche. Dies ist eine didaktische Sperre, keine abgesicherte Online-Prüfungsumgebung.
 
-XP: erstmals pro Aufgaben-ID und Tag 20/5. Level = floor(XP/200) + 1. Tagesziel zählt eindeutige IDs. Bewusst kein Leistungsanspruch durch bloßes Lesen.
-
-## Prüfung
-
-8 feste Fragen aus allen vier Gruppen und 4 mehrteilige Rechenaufgaben. 30 Minuten, absolute deadline. Eingaben und Navigation werden gespeichert. Training bewertet sofort; Prüfung bewertet einmalig bei Abgabe oder festgestelltem Zeitablauf. Eine Prüfung wird beim nächsten aktiven Aufruf weitergeführt/ausgewertet, nicht durch einen Hintergrunddienst.
-
-Ergebnisse vergangener Prüfungen speichern Datum, Punkte und Gesamtpunkte, maximal 100 Einträge. Die ausführlichen Musterlösungen der gerade beendeten Sitzung sind bis zum Verlassen/Neuladen verfügbar; das Archiv speichert die Punktübersicht, nicht jeden alten Antworttext.
+SVGs sind inline, lokal und farbschemafähig. Beschriftungen verwenden gegebene Werte, keine berechneten gesuchten Lösungen. Auf schmalen Bildschirmen können breite Diagramme horizontal gescrollt werden. Funktionsschemata sind vereinfachte Lehrbilder und keine ausführungsreifen Anlagenpläne.
 
 ## Offline und Updates
 
-sw.js installiert alle Laufzeitdateien atomar über cache.addAll. Aktivierung entfernt alte ElektroMaster-Caches. Cache-first für bereits gespeicherte Dateien; bei fehlender Netzwerkverbindung liefert eine Navigation index.html. Externe Quellen gehören nicht zum Offlineumfang.
+Service-Worker-Cache: elektromaster-2.0.0- plus Scope-Pfad. Install speichert 16 Ressourcen einschließlich Verzeichniseinstieg und index.html. Alle sechs neuen Module gehören dazu. Ressourcen werden beim Installieren mit cache:reload angefordert. Fetch arbeitet für GET innerhalb desselben Ursprungs und Scopes zunächst aus dem versionsbezogenen Cache; Navigation hat einen Offline-Fallback auf index.html.
 
-Bei jedem Release die CACHE-Versionskennung in sw.js erhöhen. App-Dateien gemeinsam veröffentlichen. Es gibt bewusst kein erzwungenes skipWaiting, das eine laufende Prüfung mitten im Update ersetzen könnte. Nach einem Update die App-Tabs schließen und neu öffnen; gegebenenfalls nach dem ersten Online-Neuladen nochmals schließen. Vor Updates ein Backup empfehlen.
+Es gibt kein bedingungsloses skipWaiting. Ein wartendes Update wird nach Schließen bisheriger Clients oder ausdrücklich per ACTIVATE_UPDATE aktiv. Die Oberfläche bietet vorher einen Backup-Download an und verweigert die ausdrückliche Übernahme bei offener Einheit. Alte Caches werden bei Aktivierung bewusst nicht automatisch entfernt. Bei künftigen Änderungen VERSION in sw.js erhöhen und die erwartete Cachekennung in app.js mitführen. Externe Quellenlinks sind keine Voraussetzung für Offline-Lernen.
 
-GitHub Pages benötigt kein Routing-Rewrite: Die Oberfläche navigiert innerhalb index.html; alle Ressourcenpfade sind relativ. Ein Projektunterpfad ist damit möglich.
+## Prüfen und weiterentwickeln
 
-## Daten und Sicherheit
+Im Projektordner: npm test. Dafür sind keine npm-Pakete erforderlich. Alternativ die sechs tests*.mjs-Dateien einzeln mit Node ausführen. Lokal starten: node server.mjs. Der Server bindet nur an 127.0.0.1:4173.
 
-Keine Telemetrie, keine Anmeldung, keine externen Schriftarten. Import validiert das Schema und bekannte Aufgaben-IDs. Es wird kein Code aus Backups ausgeführt. Texte werden für die HTML-Ausgabe maskiert. Lokale Daten sind keine manipulationssicheren Prüfungsnachweise. Uhrverstellung kann Lernabstände und Zeitprüfung beeinflussen.
-
-Der Browser entscheidet über Speicherquoten und Verfügbarkeit. Bei Speicherfehlern bleibt der aktuelle In-Memory-Zustand exportierbar. Dateien und Backups vor öffentlichem Upload trennen; persönliche Backups niemals ins öffentliche Repository hochladen.
-
-## Entwicklung und Tests
-
-Node.js LTS verwenden. Keine npm-install-Phase erforderlich.
-
-```text
-npm test
-npm start
-```
-
-Oder die drei Testdateien einzeln mit node ausführen. tests-ui.mjs nutzt eine DOM-Attrappe; es prüft Bedienlogik, aber keine Browser-Layout-Engine, keine echte Dateiauswahl und keine Service-Worker-Ausführung.
-
-Die Veröffentlichung ist vorbereitet. Ein GitHub-Repository und die Pages-Freigabe müssen noch vom Kontoinhaber angelegt werden.
+Vor Veröffentlichung alle Laufzeitdateien gemeinsam ersetzen und die tatsächliche GitHub-Pages-Adresse einschließlich Unterpfad testen. Änderungen an Aufgaben-IDs oder Generatoren benötigen erneut Migrations- und Backup-Tests. Konkrete Prüfergebnisse und noch offene Gerätekontrollen: PRUEFBERICHT.md.
