@@ -1,3 +1,11 @@
+# Ergänzung für Version 2.1
+
+Im Bereich „Tägliches Training“ stehen die heutigen Trainings immer oben. Darunter kannst du ein begonnenes altes Training fortsetzen oder mit „Überspringen und heutiges Training starten“ direkt zum heutigen Modus wechseln. Ist dieser heute bereits abgeschlossen, startet eine freiwillige Wiederholung ohne XP.
+
+Überspringen löscht keine Antworten. Unter „Trainingstage & verpasste Tage“ kannst du gespeicherte offene oder übersprungene Trainings freiwillig nachholen. Derselbe Verlauf ist in der Lernstatistik erreichbar. Beim Wechsel bleibt auch dein begonnenes heutiges Training erhalten. Nachgeholte Einheiten erscheinen beim ursprünglichen Datum mit ihrem tatsächlichen Abschlussdatum. Sie füllen keine verpassten Tagesziele auf und verlängern die Serie nicht rückwirkend. Eine Nachholung erfüllt auch das heutige Tagesziel nicht; dafür bearbeitest du eines der heutigen Trainings.
+
+Vor dem Update exportiere deinen Lernstand in der App. Der Git-Sicherungsbranch enthält nur Quellcode, keine iPhone-Lernstände. Nach Veröffentlichung die App online öffnen, unter Einstellungen nach Updates suchen und das Update mit Backup übernehmen. Bei einer offenen Einheit entweder abschließen oder nach dem Online-Laden alle App-Fenster und zugehörigen Safari-Tabs schließen und erneut öffnen. App und Browserdaten nicht löschen.
+
 # ElektroMaster 2.0 – bestehende App aktualisieren
 
 ## 1. Vor dem Update sichern
@@ -50,7 +58,7 @@ Für eine zusätzliche Erstinstallation beschreibt [Apple das Hinzufügen einer 
 
 **Tagestraining:** MC und Rechnen lassen sich unabhängig beginnen, unterbrechen und fortsetzen. Standard: zehn Fragen bzw. fünf Aufgaben. Für das Tagesziel genügt ein vollständig bearbeitetes Training; richtige Antworten sind dafür keine Voraussetzung. Jede Frage muss beantwortet, jedes Rechenfeld mit Zahl und Einheit abgegeben werden. Eine inhaltlich ernsthafte Bearbeitung kann die App darüber hinaus nicht feststellen.
 
-Die Auswahl bleibt für den Tag fest. Änderungen des Umfangs in Einstellungen gelten für den nächsten noch nicht angelegten Tag. Offene frühere Tagestrainings bleiben zugänglich. Ein Abschluss nach Mitternacht zählt am Abschlusstag. Freiwillige Wiederholungen ändern die Erfolgsstatistik, geben aber weder XP noch einen neuen Trainingstag.
+Die Auswahl bleibt für den Tag fest. Änderungen des Umfangs in Einstellungen gelten für den nächsten noch nicht angelegten Tag. Offene frühere Tagestrainings bleiben zugänglich. Ein Abschluss nach dem ursprünglichen Trainingstag wird als Nachholung gespeichert und zählt nicht für Tagesziel oder Serie. Freiwillige Wiederholungen ändern die Erfolgsstatistik, geben aber weder XP noch einen neuen Trainingstag.
 
 Die neue Tagestrainingsserie beginnt mit den Abschlüssen in Version 2.0. Alte Aktivitäten bleiben in der Statistik erhalten; sie werden nicht nachträglich als abgeschlossene Tagestrainings gewertet. Andere Lernbereiche bleiben auch bei offenem Tagesziel frei.
 
@@ -62,7 +70,7 @@ Die neue Tagestrainingsserie beginnt mit den Abschlüssen in Version 2.0. Alte A
 
 Lernmodule, Quiz, Formeltrainer, Rechentrainer, Wiederholungen und die 30-minütige Technikprüfung bleiben erhalten. Prüfungszeit läuft bei geschlossenem Fenster weiter; ausgewertet wird beim nächsten Aufruf. Der Rechentrainer akzeptiert Dezimalkomma und Punkt; keine Tausendertrennzeichen verwenden. Bewertung: 1 % relative Toleranz, mindestens 0,00001 in der gefragten Einheit; falsche Einheit gibt keinen Punkt. Mehrteilige Aufgaben geben Teilpunkte.
 
-Normale Aufgaben vergeben weiterhin 20 XP bei vollständig richtiger Antwort, sonst 5 XP, begrenzt je Aufgabentyp und Kalendertag. Tagesabschlüsse ergänzen 50 XP, höchstens einmal pro Modus und Abschlusstag. Alle 200 XP steigt das Level. Wiederholungen bleiben lernstandsabhängig.
+Normale Aufgaben vergeben weiterhin 20 XP bei vollständig richtiger Antwort, sonst 5 XP, begrenzt je Aufgabentyp und Kalendertag. Tagesabschlüsse ergänzen 50 XP, höchstens einmal pro ursprünglichem Training. Alle 200 XP steigt das Level. Wiederholungen bleiben lernstandsabhängig.
 
 ## 6. Backups und lokale Nutzung
 

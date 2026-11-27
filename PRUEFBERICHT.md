@@ -1,3 +1,13 @@
+# Prüfstand Version 2.1 – 27. November 2026
+
+Alle acht Testprogramme bestanden: die sechs bisherigen Testgruppen und tests-daily-skip.mjs sowie tests-ui-daily-skip.mjs. Der bisherige Mitternachtstest wurde an die ausdrücklich neue Nachholregel angepasst. Die übrigen Regressionen bleiben erhalten.
+
+Zusätzlich geprüft: eindeutige IDs und vier Zustände; Überspringen ohne Daten-/XP-Verlust; Verweigerung von Abschlussbonus bei übersprungenem Lauf; Nachholen mit erhaltenem heutigen Teilfortschritt; unveränderte historische Ziele; Bonus-Idempotenz; V2-Migration einschließlich alter Mitternachtsgutschriften; ungültige Metadaten; Import/Export; veraltete aktive Referenz; Wechsel über Mitternacht; 26 bzw. 34 Tage Pause; Sommer-/Winterzeit.
+
+UI-Tests verwenden weiterhin ein DOM-Modell, Offline-Tests ein Service-Worker-Modell. Eine Prüfung auf einem echten iPhone ist nicht erfolgt. Veröffentlichung und Prüfung der Live-Adresse erfolgen erst nach ausdrücklicher Nutzerfreigabe.
+
+Quellcode-Sicherung: backup/before-daily-skip-2026-11-27, Ausgangscommit 131722497d2f677e323e479f63735c1ca7957578. Diese Sicherung enthält keinen lokalen Gerätefortschritt.
+
 # ElektroMaster 2.0 – Prüfbericht
 
 Stand: 5. November 2026. Geprüft wurde das ausgelieferte lokale Quellprojekt. Es fand kein Zugriff auf den tatsächlichen Lernstand des Nutzers und keine Veröffentlichung bei GitHub statt.

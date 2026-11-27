@@ -1,6 +1,6 @@
 import {fresh as legacyFresh,validateBackup as legacyValidate,calcTypes,generate} from './engine.js';
 import {questions,lessons} from './content.js';
-import {seeded} from './daily.js';
+import {seeded,normalizeRun,trainingId} from './daily.js';
 export const STORAGE_KEY='elektromaster.v2',LEGACY_KEY='elektromaster.v1',SAFETY_KEY='elektromaster.before-v2';
 export const fresh=()=>({...legacyFresh(),version:2,favorites:[],daily:{},dailySettings:{mc:10,calc:5},dailyRewards:[],helpUses:{},moduleData:{},selectedModule:'electro'});
 const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
@@ -26,6 +26,14 @@ export function validateSession(value,{strict=false}={}){
  if(s.daily&&(!dateKey(s.daily.date)||!['mc','calc'].includes(s.daily.mode)||s.exam))throw Error('Ungültiges Tagestraining');
  if(s.completedOn&&!dateKey(s.completedOn))throw Error('Ungültiger Abschlusstag');
  if(s.finished&&s.daily&&s.items.some((q,i)=>!s.results[i]||!s.inputs[i]))throw Error('Unvollständiger Abschluss');
+ if(s.daily){
+ if(s.trainingId!==undefined&&s.trainingId!==trainingId(s.daily.date,s.daily.mode))throw Error('Ungültige Trainings-ID');
+ if(s.status!==undefined&&!['offen','begonnen','abgeschlossen','übersprungen'].includes(s.status))throw Error('Ungültiger Trainingszustand');
+ if(s.status!==undefined&&((s.status==='abgeschlossen')!==!!s.finished))throw Error('Widersprüchlicher Trainingszustand');
+ if(s.goalDate!==undefined&&s.goalDate!==null&&(!dateKey(s.goalDate)||!s.finished))throw Error('Ungültiger Zieltag');
+ if(s.skippedOn!==undefined&&!dateKey(s.skippedOn))throw Error('Ungültiger Überspringtag');
+ normalizeRun(s);
+ }
  return s;
  }catch(e){if(strict)throw e;return null;}
 }
@@ -45,7 +53,11 @@ export function validateBackup(input,{local=false}={}){
  // Reservierter Bereich für zukünftige, registrierte Module; fremde Inhalte werden nicht ausgeführt.
  s.moduleData=structuredClone(input.moduleData);
  }
- if(local)s.active=validateSession(input.active);
+ if(local){
+ s.active=validateSession(input.active);
+ // Ein Tageslauf hat genau eine maßgebliche gespeicherte Instanz.
+ if(s.active?.daily&&!s.active.daily.replay){const d=s.active.daily;s.active=s.daily[d.date]?.[d.mode]||null;if(s.active?.status==='übersprungen'||s.active?.finished)s.active=null;}
+ }
  return s;
 }
 export function loadState(storage){

@@ -1,3 +1,14 @@
+# Version 2.1 – Tagestraining ohne Nachholpflicht
+
+- Heutige MC- und Rechentrainings bleiben jederzeit erreichbar.
+- Frühere begonnene Trainings bieten „Altes Training fortsetzen“ oder „Überspringen und heutiges Training starten“.
+- Überspringen erhält Eingaben, Bewertungen, XP und Statistik, gibt aber keinen Abschlussbonus und erfüllt kein Tagesziel.
+- Übersprungene und offene gespeicherte Trainings lassen sich freiwillig nachholen. Der aktuelle Trainingsstand bleibt dabei gespeichert.
+- Die Historie zeigt offen, begonnen, abgeschlossen, übersprungen und nachgeholt; Tage ohne App-Aufruf erscheinen ab dem ersten gespeicherten Trainingstag ebenfalls als verpasste Ziele.
+- Neue Nachholungen bleiben beim ursprünglichen Trainingsdatum, mit sichtbarem tatsächlichem Abschlussdatum. Sie verändern weder frühere Tagesziele noch die historische Serie und erfüllen auch nicht das heutige Tagesziel.
+- Ein Abschlussbonus wird höchstens einmal je ursprünglichem Training vergeben. Wiederholungen geben weiterhin keine XP.
+- Vor Version 2.1 bereits gezählte Abschlusstage bleiben unverändert. Export und Import bleiben kompatibel mit V1- und V2-Sicherungen.
+
 # Neuerungen in ElektroMaster 2.0
 
 ## Lernen und Nachschlagen
