@@ -1,17 +1,12 @@
-# ElektroMaster 2.0
+# ElektroMaster 2.1
 
-Weiterentwicklung der vorhandenen ElektroMaster-1.0-App mit erhaltenen Lerninhalten und Fortschrittskennungen.
+Weiterentwicklung der bestehenden PWA. Version 2.1 ergänzt das Überspringen früherer Tagestrainings und eine nachvollziehbare Trainingshistorie. Änderungen werden erst nach ausdrücklicher Freigabe veröffentlicht.
 
-**Zuerst [ANLEITUNG.md](ANLEITUNG.md) lesen und auf jedem Gerät ein Backup exportieren.**
-
-- [Update, iPhone und Nutzung](ANLEITUNG.md)
+- [Nutzung und Updates](ANLEITUNG.md)
 - [Neuerungen](NEUERUNGEN.md)
-- [Bestandsprüfung](BESTANDSANALYSE.md)
-- [Technische Dokumentation](TECHNIK.md)
-- [Prüfergebnisse und offene Gerätekontrollen](PRUEFBERICHT.md)
+- [Technik](TECHNIK.md)
+- [Prüfbericht](PRUEFBERICHT.md)
 
-61 bisherige Lerneinheiten · 35 Grundformeln · 139 feste Fragen · 16 variable Rechenvorlagen · 62 Lexikoneinträge.
+Lokal: node server.mjs und http://localhost:4173 öffnen. Tests: npm test. Keine Paketinstallation erforderlich.
 
-Lokal: Node.js installieren, ZIP entpacken, Starten.cmd öffnen. Keine Paketinstallation nötig. Alternativ: node server.mjs, anschließend http://localhost:4173 öffnen.
-
-Vorbereitet für dein vorhandenes GitHub-Pages-Projekt. Noch nicht im GitHub-Konto veröffentlicht.
+Die vorhandenen 61 Lerneinheiten, 35 Grundformeln, 139 festen Fragen und 16 Rechenvorlagen bleiben erhalten.

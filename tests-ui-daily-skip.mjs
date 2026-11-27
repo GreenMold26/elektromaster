@@ -1,0 +1,31 @@
+// Bedienlogikprüfung mit DOM-Attrappe, keine echte Browser-/Layoutprüfung.
+import assert from 'node:assert/strict';
+const RealDate=Date;let now=new RealDate(2026,10,2,12).getTime();globalThis.Date=class extends RealDate{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}};
+const listeners={},elements=new Map(),store=new Map();let timer;
+const el=id=>{if(!elements.has(id))elements.set(id,{innerHTML:'',textContent:'',value:'',open:false,scrollTop:0,focus(){},classList:{add(){},remove(){},toggle(){}},showModal(){this.open=true;},close(){this.open=false;},addEventListener(){},click(){}});return elements.get(id);};
+globalThis.document={querySelector:el,activeElement:{focus(){}},body:{classList:{toggle(){}}},addEventListener:(type,fn)=>listeners[type]=fn,createElement:()=>({click(){}})};
+globalThis.window={scrollTo(){}};globalThis.localStorage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)};
+globalThis.confirm=()=>true;globalThis.setInterval=fn=>{timer=fn;return 1;};globalThis.setTimeout=()=>1;
+const click=(action,data={})=>listeners.click({target:{closest:s=>s==='[data-action]'?{dataset:{action,...data}}:null}});
+const nav=route=>listeners.click({target:{closest:s=>s==='[data-route]'?{dataset:{route}}:null}});
+const input=(id,value,dataset={})=>listeners.input({target:{id,value,dataset}});
+const change=t=>listeners.change({target:{dataset:{},...t}});
+const state=()=>JSON.parse(store.get('elektromaster.v2')),html=()=>el('#app').innerHTML;
+await import('./app.js');
+const old='2026-11-02';nav('daily');click('daily-start',{date:old,mode:'mc'});click('choose',{choice:'2'});click('check');click('pause');
+const xp=state().xp,answers=JSON.stringify(state().daily[old].mc.inputs),marks=JSON.stringify(state().stats);
+now=new RealDate(2026,10,3,0,1).getTime();timer();nav('daily');
+assert.match(html(),/Altes Training fortsetzen/);assert.match(html(),/Überspringen und heutiges Training starten/);
+click('daily-skip',{date:old,mode:'mc'});assert.equal(state().active.daily.date,'2026-11-03');assert.equal(state().daily[old].mc.status,'übersprungen');assert.equal(state().daily[old].mc.finished,false);assert.equal(state().xp,xp);assert.equal(JSON.stringify(state().stats),marks);assert.equal(JSON.stringify(state().daily[old].mc.inputs),answers);
+click('choose',{choice:'1'});click('pause');const current=JSON.stringify(state().daily['2026-11-03'].mc.inputs);
+nav('daily');assert.match(html(),/Übersprungen/);click('daily-start',{date:old,mode:'mc'});assert.match(html(),/Heutiges Training öffnen/);assert.equal(state().active.results[0].points,state().daily[old].mc.results[0].points);
+click('next');for(let i=1;i<10;i++){click('choose',{choice:'0'});click('check');click('next');}
+assert.equal(state().daily[old].mc.madeUp,true);assert.equal(state().daily[old].mc.goalDate,null);assert.equal(JSON.stringify(state().daily['2026-11-03'].mc.inputs),current);
+nav('dashboard');assert.match(html(),/TAGESZIEL: NEIN/);nav('stats');assert.match(html(),/Nachgeholt/);assert.match(html(),/Tagesziel verpasst/);
+nav('daily');click('daily-start',{date:'2026-11-03',mode:'mc'});assert.equal(state().active.inputs[0].choice,1);click('pause');
+now=new RealDate(2026,11,7,12).getTime();await import('./app.js?long-pause');nav('daily');assert.ok(state().daily['2026-12-07']);assert.match(html(),/2026-11-20 · Tagesziel verpasst/);assert.match(html(),/Altes Training fortsetzen/);
+click('daily-start',{date:'2026-12-07',mode:'calc'});input('value-0','21',{field:'0'});click('pause');
+nav('daily');click('daily-skip',{date:'2026-11-03',mode:'mc'});assert.equal(state().active.daily.date,'2026-12-07');assert.equal(state().daily['2026-12-07'].calc.inputs[0].values[0],'21');
+await import('./app.js?skip-reload');nav('daily');assert.equal(state().daily['2026-11-03'].mc.status,'übersprungen');
+const raw=JSON.stringify(state());await change({id:'import-file',files:[{size:raw.length,text:async()=>raw}],value:'file'});assert.equal(state().daily['2026-11-03'].mc.status,'übersprungen');assert.equal(state().daily['2026-12-07'].calc.inputs[0].values[0],'21');
+console.log('Überspringen-Bedienlogik bestanden: Mitternacht, heutiger Sofortstart, Nachholung neben aktuellem Fortschritt, Statistik, 34 Tage Pause, Neuladen und Import.');

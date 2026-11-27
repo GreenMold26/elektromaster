@@ -34,7 +34,7 @@ ok(!finishDaily(s,day.mc,today),'Unbearbeitete Einheit zählt nicht');answerWron
 const replay=replayRun(day.mc);answerWrong(replay);finishDaily(s,replay,new Date(2026,10,4));ok(s.xp===xp&&!goalReached(s,'2026-11-04'),'Wiederholung ohne XP oder neuen Abschlusstag');
 answerWrong(day.calc);finishDaily(s,day.calc,today);ok(s.xp===xp+50,'Zweiter Modus eigener Bonus');ok(completedDays(s).length===1,'Trainingstag einmal zählen');
 const next=ensureDay(s,'2026-11-03');answerWrong(next.calc);finishDaily(s,next.calc,new Date(2026,10,3,0,5));ok(dailyStreak(s,new Date(2026,10,3,12))===2,'Zwei Trainingstage');ok(dailyStreak(s,new Date(2026,10,4,12))===2,'Heutiger offener Tag toleriert');ok(dailyStreak(s,new Date(2026,10,5,12))===0,'Lücke setzt Serie zurück');
-const overnight=ensureDay(s,'2026-11-05');answerWrong(overnight.mc);finishDaily(s,overnight.mc,new Date(2026,10,6,0,1));ok(!goalReached(s,'2026-11-05')&&goalReached(s,'2026-11-06'),'Abschluss zählt tatsächlichen lokalen Kalendertag');
+const overnight=ensureDay(s,'2026-11-05');answerWrong(overnight.mc);finishDaily(s,overnight.mc,new Date(2026,10,6,0,1));ok(!goalReached(s,'2026-11-05')&&!goalReached(s,'2026-11-06'),'Nachholung ändert weder früheres noch heutiges Tagesziel');
 const dst=fresh();for(const d of [24,25,26]){const date=dayKey(new Date(2026,9,d,12));const r=ensureDay(dst,date).mc;answerWrong(r);finishDaily(dst,r,new Date(2026,9,d,12));}ok(dailyStreak(dst,new Date(2026,9,26,12))===3,'Kalendertage über Zeitumstellung');
 s.favorites=['f0','t-ratings'];s.helpUses={'f0a':3};const restored=validateBackup(JSON.parse(JSON.stringify(s)));assert.deepEqual(restored,s);count++;
 const bad=structuredClone(s);bad.daily[date].mc.items[0].options=['x','x','x','x'];assert.throws(()=>validateBackup(bad));count++;

@@ -16,3 +16,6 @@ aside{overflow-y:auto}aside .nav-label{margin-top:20px}nav{gap:2px}nav button{pa
 #help-dialog::backdrop{background:#000b}.help-header{display:flex;justify-content:space-between;align-items:center;gap:14px;position:sticky;top:-24px;background:var(--bg);padding:12px 0;z-index:2}.help-header h2{margin:0}#help-search{width:100%;margin:10px 0 20px}#help-results .lesson-row small{line-height:1.6;margin-top:6px}#help-dialog .knowledge-article{padding:18px}
 .session .answers{margin-top:22px}.session .numeric{margin-top:22px}
 @media(max-width:760px){.knowledge-article{padding:18px}.knowledge-article h2{font-size:22px}.daily-status{display:grid;grid-template-columns:1fr}.daily-summary .row{align-items:flex-start}#help-dialog{padding:16px;max-height:94vh}.help-header{top:-16px}.lexicon-row .lesson-row small{font-size:11px}.schematic{padding:10px 0}}
+
+/* Tagesentscheidung und nachvollziehbare Historie auf kleinen Bildschirmen. */
+.old-training,.daily-history{margin-top:24px}.past-run{padding:18px 0;border-bottom:1px solid var(--border)}.past-actions{display:flex;flex-wrap:wrap;gap:12px}.past-actions .btn{white-space:normal;min-height:48px;flex:1 1 240px}.history-mode{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}.history-scroll{max-height:65vh;overflow:auto}.history-mode .btn{min-height:44px}

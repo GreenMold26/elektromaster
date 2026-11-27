@@ -1,4 +1,4 @@
-const VERSION='2.0.0';
+const VERSION='2.1.0';
 const CACHE='elektromaster-'+VERSION+'-'+new URL(self.registration.scope).pathname;
 const FILES=['./','./index.html','./style.css','./app.js','./content.js','./engine.js','./state.js','./daily.js','./knowledge.js','./diagrams.js','./features.js','./platform.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES.map(file=>new Request(new URL(file,self.registration.scope),{cache:'reload'}))))));
